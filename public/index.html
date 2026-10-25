@@ -1,0 +1,242 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="color-scheme" content="light dark" />
+    <meta name="referrer" content="no-referrer" />
+    <meta name="cmeter-token" content="__CMETER_TOKEN__" />
+    <title>Command Code usage — local</title>
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <link rel="stylesheet" href="/styles.css" />
+  </head>
+  <body>
+    <div class="shell">
+      <header class="topbar">
+        <div class="brand">
+          <span class="brand-mark" aria-hidden="true"><span></span><span></span><span></span></span>
+          <div class="brand-text">
+            <h1>Command Code <span class="plan" id="plan-id" hidden></span></h1>
+            <p class="subtitle">Usage meter · running on this machine</p>
+          </div>
+        </div>
+        <div class="topbar-actions">
+          <span class="status-pill" id="status-pill" data-tone="muted">Starting…</span>
+          <span class="updated" id="updated">—</span>
+          <button class="button ghost" id="open-settings" type="button" hidden>API key</button>
+          <button class="button ghost" id="refresh-now" type="button">Refresh now</button>
+        </div>
+      </header>
+
+      <div class="banner" id="banner" role="status" hidden>
+        <span class="banner-text" id="banner-text"></span>
+        <button class="button link" id="banner-action" type="button" hidden></button>
+      </div>
+
+      <main>
+        <section class="card auth" id="auth" aria-labelledby="auth-title" hidden>
+          <h2 id="auth-title">Connect Command Code</h2>
+          <p class="lede">
+            Paste your Provider-API key. It is stored only in <code>config.json</code> in this folder, readable by
+            your user account alone, and sent only to <code>api.commandcode.ai</code>.
+          </p>
+          <p class="current-key" id="current-key" hidden></p>
+          <form id="key-form" autocomplete="off">
+            <label for="api-key">Provider API key</label>
+            <div class="key-row">
+              <input
+                id="api-key"
+                name="api-key"
+                type="password"
+                spellcheck="false"
+                autocomplete="off"
+                placeholder="user_…"
+                required
+              />
+              <button class="button ghost" id="toggle-key" type="button" aria-pressed="false">Show</button>
+            </div>
+            <p class="hint">
+              Create or manage keys at
+              <a href="https://commandcode.ai/settings/keys" target="_blank" rel="noopener noreferrer"
+                >commandcode.ai/settings/keys</a
+              >. The dashboard never sends the key anywhere else, and never shows it back to the page.
+            </p>
+            <div class="form-actions">
+              <button class="button primary" type="submit" id="save-key">Save and load</button>
+              <button class="button ghost" id="auth-cancel" type="button" hidden>Cancel</button>
+              <span class="form-message" id="auth-message" role="alert"></span>
+            </div>
+          </form>
+          <p class="hint">
+            Already signed in with the Command Code CLI? Its local auth file is detected automatically — there is
+            nothing to paste.
+          </p>
+          <button class="button danger" id="forget-key" type="button" hidden>Forget stored key</button>
+        </section>
+
+        <section id="dashboard" aria-label="Usage dashboard" hidden>
+          <div class="controls">
+            <div class="controls-text">
+              <span class="controls-label" id="interval-label">Refresh every</span>
+              <span class="controls-note" id="interval-note">while this page is open</span>
+            </div>
+            <div class="segmented" role="group" aria-labelledby="interval-label" id="interval-group">
+              <button type="button" data-seconds="30" aria-pressed="false">30s</button>
+              <button type="button" data-seconds="60" aria-pressed="false">60s</button>
+              <button type="button" data-seconds="90" aria-pressed="false">90s</button>
+              <button type="button" data-seconds="120" aria-pressed="false">120s</button>
+            </div>
+          </div>
+
+          <div class="windows">
+            <article class="card window" id="window-fiveHour" data-key="fiveHour" data-tone="ok">
+              <header>
+                <h2>5 hours</h2>
+                <span class="window-tag" data-role="tag"></span>
+              </header>
+              <p class="percent" data-role="percent">—</p>
+              <div
+                class="bar"
+                role="progressbar"
+                aria-label="5-hour window used"
+                aria-valuemin="0"
+                aria-valuemax="100"
+                aria-valuenow="0"
+                data-role="bar"
+              >
+                <span class="bar-fill" data-role="fill"></span>
+              </div>
+              <p class="usage" data-role="usage">—</p>
+              <p class="reset" data-role="reset">—</p>
+            </article>
+
+            <article class="card window" id="window-weekly" data-key="weekly" data-tone="ok">
+              <header>
+                <h2>Weekly</h2>
+                <span class="window-tag" data-role="tag"></span>
+              </header>
+              <p class="percent" data-role="percent">—</p>
+              <div
+                class="bar"
+                role="progressbar"
+                aria-label="Weekly window used"
+                aria-valuemin="0"
+                aria-valuemax="100"
+                aria-valuenow="0"
+                data-role="bar"
+              >
+                <span class="bar-fill" data-role="fill"></span>
+              </div>
+              <p class="usage" data-role="usage">—</p>
+              <p class="reset" data-role="reset">—</p>
+            </article>
+
+            <article class="card window" id="window-monthly" data-key="monthly" data-tone="ok">
+              <header>
+                <h2>Monthly</h2>
+                <span class="window-tag" data-role="tag" title="Derived from cycle spend and remaining credit pools">derived</span>
+              </header>
+              <p class="percent" data-role="percent">—</p>
+              <div
+                class="bar"
+                role="progressbar"
+                aria-label="Monthly window used"
+                aria-valuemin="0"
+                aria-valuemax="100"
+                aria-valuenow="0"
+                data-role="bar"
+              >
+                <span class="bar-fill" data-role="fill"></span>
+              </div>
+              <p class="usage" data-role="usage">—</p>
+              <p class="reset" data-role="reset">—</p>
+            </article>
+          </div>
+
+          <div class="stats">
+            <article class="card stat">
+              <h2>Tokens used</h2>
+              <p class="stat-value" id="tokens-value">—</p>
+              <p class="stat-detail" id="tokens-detail">cycle total</p>
+            </article>
+            <article class="card stat">
+              <h2>Runs</h2>
+              <p class="stat-value" id="runs-value">—</p>
+              <p class="stat-detail" id="runs-detail">cycle total</p>
+            </article>
+            <article class="card stat">
+              <h2>Credits</h2>
+              <p class="stat-value" id="credits-value">—</p>
+              <p class="stat-detail" id="credits-detail">USD</p>
+              <div
+                class="bar slim"
+                id="credits-bar"
+                role="progressbar"
+                aria-label="Credit allowance used"
+                aria-valuemin="0"
+                aria-valuemax="100"
+                aria-valuenow="0"
+              >
+                <span class="bar-fill" id="credits-fill"></span>
+              </div>
+            </article>
+          </div>
+
+          <article class="card cost" aria-labelledby="cost-title">
+            <div class="cost-head">
+              <div>
+                <h2 id="cost-title">Cost of refreshing</h2>
+                <p class="hint" id="cost-note">
+                  These calls read billing metadata; Command Code reports no charge for them.
+                </p>
+              </div>
+              <span class="chip" id="cost-chip" data-tone="ok">not charged</span>
+            </div>
+            <div class="cost-grid">
+              <div class="cost-cell">
+                <span class="cost-label">Cost this refresh</span>
+                <span class="cost-value" id="cost-value">$0.00</span>
+              </div>
+              <div class="cost-cell">
+                <span class="cost-label">Requests this refresh</span>
+                <span class="cost-value" id="cost-requests">—</span>
+              </div>
+              <div class="cost-cell">
+                <span class="cost-label">Reported charges</span>
+                <span class="cost-value" id="cost-charged">none</span>
+              </div>
+              <div class="cost-cell">
+                <span class="cost-label">This session</span>
+                <span class="cost-value" id="cost-session">—</span>
+              </div>
+            </div>
+          </article>
+        </section>
+
+        <section class="card empty" id="empty" aria-live="polite" hidden>
+          <h2 id="empty-title">Waiting for the first update…</h2>
+          <p id="empty-text">Reading your limits from Command Code.</p>
+          <button class="button ghost" id="empty-retry" type="button" hidden>Try again</button>
+        </section>
+      </main>
+
+      <footer>
+        <p>
+          Runs entirely on your machine. The only outbound requests go to <code>api.commandcode.ai</code>; there are
+          no analytics, no cookies and no external assets.
+        </p>
+        <details>
+          <summary>What is stored, and where</summary>
+          <ul>
+            <li>Your API key lives in <code>config.json</code> in this folder, file mode 600. It is never returned by the server to this page.</li>
+            <li>The dashboard holds usage numbers in memory only; nothing is written to your browser.</li>
+            <li>The server is bound to <code>127.0.0.1</code>, so other machines on the network cannot reach it.</li>
+            <li>Remove the key at any time from the connection panel (“Forget stored key”).</li>
+          </ul>
+        </details>
+      </footer>
+    </div>
+    <noscript>This dashboard needs JavaScript; it is served entirely from your machine.</noscript>
+    <script src="/app.js" type="module"></script>
+  </body>
+</html>

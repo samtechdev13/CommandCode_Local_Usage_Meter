@@ -1,0 +1,42 @@
+# Repository guard: no local credential file should ever be committed.
+#
+# Patterns without a slash match at every depth, so a config.json dropped into
+# any subfolder is ignored too.
+
+# ---------------------------------------------------------------------------
+# Secrets and local configuration
+# ---------------------------------------------------------------------------
+config.json
+config.*.json
+!config.example.json
+config.json.tmp-*
+auth.json
+.credentials.json
+.env
+.env.*
+!.env.example
+
+# ---------------------------------------------------------------------------
+# Runtime state and logs
+# ---------------------------------------------------------------------------
+.cache/
+**/.cache/
+*.log
+*.tmp
+
+# ---------------------------------------------------------------------------
+# Tool state (plans, learned preferences) — machine-local
+# ---------------------------------------------------------------------------
+.commandcode/
+
+# ---------------------------------------------------------------------------
+# Private keys and certificates
+# ---------------------------------------------------------------------------
+*.pem
+*.p12
+*.key
+
+# ---------------------------------------------------------------------------
+# OS noise
+# ---------------------------------------------------------------------------
+.DS_Store

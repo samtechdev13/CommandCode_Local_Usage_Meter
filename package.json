@@ -1,0 +1,18 @@
+{
+  "name": "usage-meter-local",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "description": "Local-only web dashboard for Command Code usage limits",
+  "bin": {
+    "usage-meter": "./server.mjs"
+  },
+  "engines": {
+    "node": ">=18.17"
+  },
+  "scripts": {
+    "start": "node server.mjs",
+    "fixture": "node test/fixture-server.mjs --grow",
+    "test": "node --test test/limits.test.mjs test/cost.test.mjs test/config-store.test.mjs test/server.test.mjs test/secrets.test.mjs"
+  }
+}

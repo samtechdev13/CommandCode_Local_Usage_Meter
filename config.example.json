@@ -1,0 +1,26 @@
+{
+  "$comment": "config.json is created when you save your key in the dashboard. Keys here are optional; apiKey may be pasted by hand too. Never commit config.json.",
+  "apiKey": "",
+  "refreshSeconds": 60,
+  "language": "en",
+  "thresholds": {
+    "warn": 60,
+    "critical": 85
+  },
+  "endpoints": {
+    "baseUrl": "https://api.commandcode.ai",
+    "whoamiPath": "/alpha/whoami",
+    "creditsPath": "/alpha/billing/credits",
+    "subscriptionsPath": "/alpha/billing/subscriptions",
+    "usageSummaryPath": "/alpha/usage/summary"
+  },
+  "creditFiles": [
+    "~/.commandcode/auth.json",
+    "~/.pi/agent/auth.json"
+  ],
+  "requestTimeoutMs": 8000,
+  "server": {
+    "port": 4317,
+    "openBrowser": true
+  }
+}
